@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: abdm6464/hellow-image:v0.0.1
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "200m"
+            limits:
+               memory: "500Mi"
+               cpu: "500m"  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-svc
+spec:
+  selector:
+    app: app
+  ports:
+    - name: app
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
